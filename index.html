@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>LiveFFMPEG</title>
+        
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" /> 
+        	
+        <script type="text/javascript" src="path/to/JWPlayerHLS/jwplayer.js" charset="utf-8"></script> 
+        <script src="path/to/socket.io/socket.io.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js" charset="UTF-8"></script>
+        <script src="http://code.jquery.com/ui/jquery-ui-git.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			
+			var socket = io.connect('http://localhost:8080');
+			
+			socket.on('StateLoaded', function(data) {
+				//console.log(data);
+			});
+			
+			
+			/*
+				When the document is ready, use the jQuery ajax method to call the web service that provides the
+				meeting information.
+			*/
+			$('document').ready(function () {
+				document.getElementById('StreamButton').addEventListener('click', StreamHandler); 
+				
+				/*
+					The web service used to provide meeting information should provide a meeting id, meeting date,
+					and meeting name. This information will be used to populate the meeting selector element.
+				*/
+				
+				$.ajax({
+						url: 'URL to meeting web service provider',
+						dataType: "jsonp",
+						jsonpCallback: "meetingTypeCallback",
+						cache: false,
+						timeout: 5000,
+						success: function(data) {
+							console.log('Success', data);
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							console.log('error ' + textStatus + " " + errorThrown);
+						}
+					});
+				
+			});
+			
+			//Callback function for the AJAX request/
+			function meetingTypeCallback(data) {
+				
+				var content = data['DATA'];
+				var sMeetingType = '';
+				var dMeetingDate = '';
+				var dCatchAll = (new Date()).getFullYear().toString() + ((new Date()).getMonth() + 1).toString() + (new Date()).getDate().toString();
+				var dCatchAllDisplay 	= ((new Date()).getMonth() + 1).toString() + '/' + (new Date()).getDate().toString() + '/' + (new Date()).getFullYear().toString();
+				
+				dCatchAllDisplay		= $.datepicker.parseDate('m/d/yy', dCatchAllDisplay);
+				dCatchAllDisplay 		= $.datepicker.formatDate('mm/dd/yy', dCatchAllDisplay);
+				
+				for(i=0; i < content.length; i++) {
+					
+					sMeetingType = content[i][0];
+					
+					dMeetingDate = $.trim(content[i][1]);
+					dMeetingDate = $.datepicker.parseDate('MM, dd yy', dMeetingDate);
+					dMeetingDate = $.datepicker.formatDate('mm/dd/yy', dMeetingDate);
+					dMeeting	 = $.datepicker.parseDate('mm/dd/yy', dMeetingDate);
+					dMeeting	 = $.datepicker.formatDate('yymmdd', dMeeting);
+					console.log('dMeeting: ' + dMeeting);
+					
+					document.getElementById('inputMeetingType').innerHTML += '<option value="' + content[i][0] + ':' + content[i][3] + ':' + dMeeting + '">' + dMeetingDate + ' : ' + content[i][2] + ' - ' + content[i][3] + '</option>';
+				
+				}
+					document.getElementById('inputMeetingType').innerHTML += '<option value="9999:Catch All:' + dCatchAll + '">' + dCatchAllDisplay + ' : Catch All' + '</option>';
+			}
+			
+			/*
+				Function that passes the streaming status and meeting information to the NodeJS server using SocketIO.
+				This function also updates the 'Start/Stop' button in the UI.
+			*/
+			function StreamHandler() {
+				
+				var StreamValue = $('#StreamButton').val();
+				
+				var MeetingType			= $('#inputMeetingType').val().split(":");
+				var MeetingDate				= MeetingType[2];
+				var MeetingID				= MeetingType[0];
+				var MeetingType				= MeetingType[1];
+				var ErrorMessage = '';
+				
+				if(StreamValue != '' && MeetingType != -1 && MeetingID != '') {
+					
+					if(StreamValue == 'true') {
+						socket.emit('Streamer', { 'Status' : 'true', 'Meeting ID' : MeetingID, 'Meeting Type' : MeetingType, 'Meeting Date' : MeetingDate });
+					} else  {
+						socket.emit('Streamer', { 'Status' : 'false' });
+					}
+					
+					
+					
+					if(StreamValue == 'true') {
+						socket.emit('Streamer', { 'Status' : 'true', 'Meeting Type' : MeetingType, 'Meeting ID': MeetingID, 'Meeting Date' : MeetingDate });	
+						
+						document.getElementById('StreamButton').value = 'false';
+						document.getElementById('StreamButton').className = 'btn btn-danger';
+						document.getElementById('StreamButton').innerHTML = "End Stream";
+					} else {
+						console.log("false");
+						socket.emit('Streamer', { 'Status' : 'false', 'Meeting Type' : MeetingType, 'Meeting ID': MeetingID, 'Meeting Date' : MeetingDate });
+						
+						document.getElementById('StreamButton').value = 'true';
+						document.getElementById('StreamButton').className = 'btn btn-primary';
+						document.getElementById('StreamButton').innerHTML = "Start Stream";
+					}
+				} else {
+					if(MeetingID == '') {
+						ErrorMessage += 'Please enter a meeting ID.';
+					}
+					
+					if(MeetingType == -1) {
+						if(ErrorMessage == '') {
+							ErrorMessage += 'Please select a meeting type.';
+						} else {
+							ErrorMessage += '\nPlease select a meeting type.';
+						}
+					}
+					
+					alert(ErrorMessage);
+				}
+			}
+			
+		</script>
+		
+        	
+	</head>
+	<body>
+    	
+        <!-- BEGIN: Header -->
+    	<header class="container">
+        	<!-- BEGIN: Masthead / Brand  Row -->
+            <div class="row">
+                <div class="span5" style="margin-top: 5px; position: relative; top: 30px; z-index: 100;">
+                    <a href="" class="brand" style="padding: 0 20px;">
+                        <img src="path/to/branding/image" />
+                    </a>
+                </div>
+            	
+            </div>
+            <!-- END: Masthead / Brand  Row -->
+        
+            <!-- BEGIN: Navigation Row -->
+            <nav>
+                <div class="navbar">
+                    <div class="navbar-inner">
+                     
+                        
+                    </div>
+                </div>
+            </nav>
+            <!-- END: Navigation Row -->
+            
+            <div class="row">
+				<div class="span12">
+					<h2>FFMPEG Live Streaming</h2>
+                    <hr />
+                </div>
+            </div>
+        </header>
+        <!-- END: Header -->
+		
+        <!-- BEGIN: Body -->
+        <div class="container">
+        	
+            
+            
+            <div class="row">
+            	<div class="span5">
+                	
+                    <form class="form-horzontal">
+                    	<div class="control-group">
+                        	<label class="control-label" for="inputMeetingType">Select a Meeting:</label>
+                            <div class="controls">
+                            	<select id="inputMeetingType" placeholder="Meeting Type">
+                                	
+                                </select>
+                            </div>
+                        </div>
+                        <button	type='button' id='StreamButton' value="true" class="btn btn-primary">Start Stream</button>
+                    
+                    </form>
+                </div>
+                
+                <div class="span7">
+                	<div id='mediaplayer'></div>
+                    
+                    <script type="text/javascript">
+					  jwplayer('mediaplayer').setup({
+						file: 'rtmp://server',
+						id: "mediaplayer",
+						primary: "flash",
+						autostart: true
+					  });
+					</script>
+                </div>
+            </div>
+          
+		</div>
+        <!-- END: Body -->
+        
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js" charset="UTF-8"></script>
+            
+	</body>
+</html>
