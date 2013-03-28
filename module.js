@@ -135,6 +135,13 @@ var FFMPEG_Args		= [
 
 
 process.on('message', function(m) {
+	
+	/*
+		UNC Example: 	\\\\UNCVolumeName\\path\\to\\location
+		Local Example:	C:\\path\\to\\location
+	*/
+
+	
 	videoFilePath_Type 		= path.normalize('\\\\UNCVolumeName\\path\\to\\video\\' + m['Meeting Type'] + '\\' + m['Meeting ID']);
 	videoFilePath 			= path.normalize(videoFilePath_Type + '\\');
 	videoFileName 			= m['Meeting Date'] + '_' + m['Meeting ID'] + '.mp4';
