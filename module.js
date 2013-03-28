@@ -8,165 +8,137 @@ var 	spawn = require('child_process').spawn
 	,	MeetingDate		= ''
 	,	FFMPEGPath		= 'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe';
 
-	
-var FFMPEG_Args		= ['-re', 
-						'-y', 
-						'-rtbufsize', 
-						'2000000k', 
-						'-probesize', 
-						'50k', 
-						'-f', 
-						'dshow', 
-						'-i', 
-						'video=dshow video source:audio=dshow audio source', 
-						'-isync', 
-						'-c:v', 
-						'libx264', 
-						'-s', 
-						'640x480', 
-						'-b:v', 
-						'1200k', 
-						'-vsync',
-						'vfr',
-						'-pix_fmt', 
-						'yuv420p', 
-						'-threads',
-						'0',
-						'-aspect', 
-						'4:3', 
-						'-preset', 
-						'ultrafast',
-						'-tune',
-						'zerolatency', 
-						'-profile:v', 
-						'baseline', 
-						'-crf', 
-						'25', 
-						'-c:a', 
-						'libvo_aacenc', 
-						'-b:a', 
-						'32k', 
-						'-af',
-						'aresample=44100', 
-						'-ac', 
-						'2', 
-						'-f', 
-						'flv', 
-						'rtmp://server', 
-						'-c:v', 
-						'libx264', 
-						'-s', 
-						'320x240', 
-						'-b:v', 
-						'500k', 
-						'-vsync',
-						'vfr',
-						'-pix_fmt', 
-						'yuv420p', 
-						'-threads',
-						'0',
-						'-aspect', 
-						'4:3', 
-						'-preset', 
-						'ultrafast', 
-						'-tune', 
-						'zerolatency',
-						'-profile:v', 
-						'baseline', 
-						'-crf', 
-						'25', 
-						'-c:a',  
-						'libvo_aacenc', 
-						'-b:a', 
-						'32k', 
-						'-af', 
-						'aresample=44100',  
-						'-ac', 
-						'2', 
-						'-f', 
-						'flv', 
-						'rtmp://server',
-						'-c:v', 
-						'libx264', 
-						'-s', 
-						'192x144', 
-						'-b:v', 
-						'96k', 
-						'-vsync',
-						'vfr',
-						'-pix_fmt', 
-						'yuv420p',
-						'-threads',
-						'0', 
-						'-aspect',
-						'4:3',
-						'-preset',
-						'ultrafast',
-						'-tune',
-						'zerolatency',
-						'-profile:v',
-						'baseline',
-						'-crf',
-						'25', 
-						'-c:a', 
-						'libvo_aacenc', 
-						'-b:a',
-						'16k',
-						'-af',
-						'aresample=44100', 
-						'-ac',
-						'1',
-						'-f',
-						'flv', 
-						'rtmp://server', 
-						'-c:v',
-						'libx264',
-						'-s',
-						'320x240',
-						'-b:v',
-						'500k',
-						'-vsync',
-						'vfr',
-						'-pix_fmt',
-						'yuv420p',
-						'-threads', 
-						'0',
-						'-aspect', 
-						'4:3', 
-						'-preset',
-						'ultrafast',
-						'-tune',
-						'zerolatency',
-						'-profile:v',
-						'baseline',
-						'-crf', 
-						'25',
-						'-c:a',
-						'libvo_aacenc',
-						'-b:a',
-						'32k', 
-						'-af',
-						'aresample=44100', 
-						'-ac',
-						'2',
-						'-f', 
-						'mp4' 
-						];
+//Argument Count: 118
+
+var FFMPEG_Args		= [
+						'-re' //0
+						, '-i'
+						, 'C:\\Program Files (x86)\\ffmpeg\\bin\\mux.avs'
+						, '-y'
+						, '-c:v'
+						, 'libx264'
+						, '-s'
+						, '640x480'
+						, '-b:v'
+						, '1200k'
+						, '-pix_fmt' //10
+						, 'yuv420p'
+						, '-threads'
+						, '0'
+						, '-aspect'
+						, '4:3'
+						, '-preset'
+						, 'ultrafast'
+						, '-tune'
+						, 'zerolatency'
+						, '-profile:v' //20
+						, 'baseline'
+						, '-crf'
+						, '25'
+						, '-c:a'
+						, 'libvo_aacenc'
+						, '-b:a'
+						, '32k'
+						, '-ac'
+						, '2'
+						, '-f' //30
+						, 'flv'
+						, 'rtmp://server'
+						, '-c:v'
+						, 'libx264'
+						, '-s'
+						, '320x240'
+						, '-b:v'
+						, '500k'
+						, '-pix_fmt'
+						, 'yuv420p' //40
+ 						, '-threads'
+						, '0'
+						, '-aspect'
+						, '4:3'
+						, '-preset'
+						, 'ultrafast'
+						, '-tune'
+						, 'zerolatency'
+						, '-profile:v'
+						, 'baseline' //50
+						, '-crf'
+						, '25'
+						, '-c:a'
+						, 'libvo_aacenc'
+						, '-b:a'
+						, '32k'
+						, '-ac'
+						, '2'
+						, '-f'
+						, 'flv' //60
+						, 'rtmp://server'
+						, '-c:v'
+						, 'libx264'
+						, '-s'
+						, '192x144'
+						, '-b:v'
+						, '96k'
+						, '-pix_fmt'
+						, 'yuv420p'
+						, '-threads' //70
+						, '0'
+						, '-aspect'
+						, '4:3'
+						, '-preset'
+						, 'ultrafast'
+						, '-tune'
+						, 'zerolatency'
+						, '-profile:v'
+						, 'baseline'
+						, '-crf' //80
+						, '25'
+						, '-c:a'
+						, 'libvo_aacenc'
+						, '-b:a'
+						, '16k'
+						, '-ac'
+						, '1'
+						, '-f'
+						, 'flv'
+						, 'rtmp://server' //90
+						, '-c:v'
+						, 'libx264'
+						, '-s'
+						, '320x240'
+						, '-b:v'
+						, '500k'
+						, '-pix_fmt'
+						, 'yuv420p'
+						, '-threads'
+						, '0' //100
+						, '-aspect'
+						, '4:3'
+						, '-preset'
+						, 'ultrafast'
+						, '-tune'
+						, 'zerolatency'
+						, '-profile:v'
+						, 'baseline'
+						, '-crf'
+						, '25' //110
+						, '-c:a'
+						, 'libvo_aacenc'
+						, '-b:a'
+						, '32k'
+						, '-ac'
+						, '2'
+						, '-f'
+						, 'mp4' //118
+					];
 
 
 
 process.on('message', function(m) {
-	
-	/*
-		UNC Example: 	\\\\UNCVolumeName\\path\\to\\location
-		Local Example:	C:\\path\\to\\location
-	*/
-	
 	videoFilePath_Type 		= path.normalize('\\\\UNCVolumeName\\path\\to\\video\\' + m['Meeting Type'] + '\\' + m['Meeting ID']);
 	videoFilePath 			= path.normalize(videoFilePath_Type + '\\');
 	videoFileName 			= m['Meeting Date'] + '_' + m['Meeting ID'] + '.mp4';
 	storagePath 			= path.normalize(videoFilePath + videoFileName);
-	
 	
 	/* BEGIN: File Directory Check and Creation */
 	fs.exists(path.dirname(videoFilePath_Type), function(exists) {
@@ -213,12 +185,7 @@ process.on('message', function(m) {
 							FFMPEG_Args[100], FFMPEG_Args[101], FFMPEG_Args[102], FFMPEG_Args[103], FFMPEG_Args[104],
 							FFMPEG_Args[105], FFMPEG_Args[106], FFMPEG_Args[107], FFMPEG_Args[108], FFMPEG_Args[109],
 							FFMPEG_Args[110], FFMPEG_Args[111], FFMPEG_Args[112], FFMPEG_Args[113], FFMPEG_Args[114],
-							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], FFMPEG_Args[119],
-							FFMPEG_Args[120], FFMPEG_Args[121], FFMPEG_Args[122], FFMPEG_Args[123], FFMPEG_Args[124], 
-							FFMPEG_Args[125], FFMPEG_Args[126], FFMPEG_Args[127], FFMPEG_Args[128], FFMPEG_Args[129], 
-							FFMPEG_Args[130], FFMPEG_Args[131], FFMPEG_Args[132], FFMPEG_Args[133], FFMPEG_Args[134],
-							FFMPEG_Args[135], FFMPEG_Args[136], FFMPEG_Args[137], FFMPEG_Args[138], FFMPEG_Args[139],
-							FFMPEG_Args[140], FFMPEG_Args[141], storagePath ], function() {
+							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], storagePath ], function() {
 	
 
 						});
@@ -270,16 +237,10 @@ process.on('message', function(m) {
 							FFMPEG_Args[100], FFMPEG_Args[101], FFMPEG_Args[102], FFMPEG_Args[103], FFMPEG_Args[104],
 							FFMPEG_Args[105], FFMPEG_Args[106], FFMPEG_Args[107], FFMPEG_Args[108], FFMPEG_Args[109],
 							FFMPEG_Args[110], FFMPEG_Args[111], FFMPEG_Args[112], FFMPEG_Args[113], FFMPEG_Args[114],
-							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], FFMPEG_Args[119],
-							FFMPEG_Args[120], FFMPEG_Args[121], FFMPEG_Args[122], FFMPEG_Args[123], FFMPEG_Args[124], 
-							FFMPEG_Args[125], FFMPEG_Args[126], FFMPEG_Args[127], FFMPEG_Args[128], FFMPEG_Args[129], 
-							FFMPEG_Args[130], FFMPEG_Args[131], FFMPEG_Args[132], FFMPEG_Args[133], FFMPEG_Args[134],
-							FFMPEG_Args[135], FFMPEG_Args[136], FFMPEG_Args[137], FFMPEG_Args[138], FFMPEG_Args[139],
-							FFMPEG_Args[140], FFMPEG_Args[141], storagePath ], function() {
+							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], storagePath ], function() {
 	
 
 						});
-						
 					});
 				} else { 
 					console.log('Destination directory already exists. Line: 238');
@@ -312,12 +273,7 @@ process.on('message', function(m) {
 							FFMPEG_Args[100], FFMPEG_Args[101], FFMPEG_Args[102], FFMPEG_Args[103], FFMPEG_Args[104],
 							FFMPEG_Args[105], FFMPEG_Args[106], FFMPEG_Args[107], FFMPEG_Args[108], FFMPEG_Args[109],
 							FFMPEG_Args[110], FFMPEG_Args[111], FFMPEG_Args[112], FFMPEG_Args[113], FFMPEG_Args[114],
-							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], FFMPEG_Args[119],
-							FFMPEG_Args[120], FFMPEG_Args[121], FFMPEG_Args[122], FFMPEG_Args[123], FFMPEG_Args[124], 
-							FFMPEG_Args[125], FFMPEG_Args[126], FFMPEG_Args[127], FFMPEG_Args[128], FFMPEG_Args[129], 
-							FFMPEG_Args[130], FFMPEG_Args[131], FFMPEG_Args[132], FFMPEG_Args[133], FFMPEG_Args[134],
-							FFMPEG_Args[135], FFMPEG_Args[136], FFMPEG_Args[137], FFMPEG_Args[138], FFMPEG_Args[139],
-							FFMPEG_Args[140], FFMPEG_Args[141], storagePath ], function() {
+							FFMPEG_Args[115], FFMPEG_Args[116], FFMPEG_Args[117], FFMPEG_Args[118], storagePath ], function() {
 	
 
 						});
