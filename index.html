@@ -93,14 +93,6 @@
 				if(StreamValue != '' && MeetingType != -1 && MeetingID != '') {
 					
 					if(StreamValue == 'true') {
-						socket.emit('Streamer', { 'Status' : 'true', 'Meeting ID' : MeetingID, 'Meeting Type' : MeetingType, 'Meeting Date' : MeetingDate });
-					} else  {
-						socket.emit('Streamer', { 'Status' : 'false' });
-					}
-					
-					
-					
-					if(StreamValue == 'true') {
 						socket.emit('Streamer', { 'Status' : 'true', 'Meeting Type' : MeetingType, 'Meeting ID': MeetingID, 'Meeting Date' : MeetingDate });	
 						
 						document.getElementById('StreamButton').value = 'false';
