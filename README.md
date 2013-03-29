@@ -13,7 +13,7 @@ In my experience, a minimum of an Intel Core i5 processor with at least 4 GB of 
 
 Software Requirements:
 
-- AviSync
+- AviSynnth
 - FFMPEG
 - GraphEdit or GraphStudio
 - NodeJS
