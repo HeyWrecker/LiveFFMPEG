@@ -13,7 +13,7 @@ In my experience, a minimum of an Intel Core i5 processor with at least 4 GB of 
 
 Software Requirements:
 
-- Avisynth
+- AviSynth
 - FFMPEG
 - GraphEdit or GraphStudio
 - NodeJS
@@ -24,7 +24,7 @@ Web Service Info:
 
 Our agency uses the SIRE suite of proudcts for document and agenda management. The web service that was developed in-house was geared towards using the meeting information provided by SIRE in order to uniquely identify meetings from one another in our archive.
 
-3/28/2013 - Notes About Avisynth and GraphEdit
+3/28/2013 - Notes About AviSynth and GraphEdit
 
 In testing, I noticed quite a bit of audio drift in lip synchronization when using the dshow input within FFMPEG. Thanks to some great input from the Zeranoe forums, I made the following changes to the FFMPEG input source:
 
